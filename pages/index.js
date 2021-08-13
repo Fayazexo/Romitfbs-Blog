@@ -90,7 +90,7 @@ const Index = () => (
             </Text>
             <Button
               as="a"
-              href="#course-overview"
+              href="https://www.instagram.com/romitfbs"
               fontWeight="bold"
               h="2.5rem"
               mr={1}
