@@ -86,7 +86,7 @@ const Index = () => (
             </Heading>
             <Text color="gray.700" mb={4} fontSize="lg">
               Born with ambition, Living with dedication <br />
-              Raised by the 90's
+              Grew up with the 90's
             </Text>
             <Button
               as="a"
