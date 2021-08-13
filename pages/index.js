@@ -97,7 +97,7 @@ const Index = () => (
               size="md"
               bg="gray.800"
               color="white"
-              _hover={{ bg: 'black' }}
+              _hover={{ bg: 'black', cursor: 'pointer' }}
             >
               Instagram →
             </Button>
