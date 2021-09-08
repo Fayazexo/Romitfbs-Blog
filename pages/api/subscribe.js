@@ -1,3 +1,5 @@
+import { Directus } from '@directus/sdk';
+
 export default async (req, res) => {
   const { email } = req.body;
 
@@ -6,21 +8,10 @@ export default async (req, res) => {
   }
 
   try {
-    const API_KEY = process.env.BUTTONDOWN_API_KEY;
-    const response = await fetch(
-      `https://api.buttondown.email/v1/subscribers`,
-      {
-        body: JSON.stringify({
-          email,
-          tags: ['Romitfbs Personal Blog']
-        }),
-        headers: {
-          Authorization: `Token ${API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        method: 'POST'
-      }
-    );
+    const directus = new Directus(process.env.API_URL);
+    const response = await directus.items('subscribers').createOne({
+      email: email
+    });
 
     if (response.status >= 400) {
       const text = await response.text();
