@@ -8,7 +8,7 @@ export default async (req, res) => {
   }
 
   try {
-    const directus = new Directus(process.env.API_URL);
+    const directus = new Directus(process.env.NEXT_PUBLIC_API_URL);
     const response = await directus.items('subscribers').createOne({
       email: email
     });

@@ -1,5 +1,4 @@
 import {
-  AspectRatioBox,
   Avatar,
   Box,
   Button,
@@ -134,30 +133,14 @@ export default function Index({ posts }) {
             alignItems="flex-start"
             maxWidth="600px"
           >
-            <Heading
-              letterSpacing="tight"
-              mb={4}
-              as="h2"
-              size="lg"
-              fontWeight="bold"
-            >
-              “Either write something worth reading or do something worth
-              writing”
-            </Heading>
-            <Text color="gray.700" mb={4}>
-              With this mindset, I'll do everything that is worth writing and
-              write it myself. Welcome to my blog corner. I hope you enjoy your
-              time.
-            </Text>
-
-            <Divider borderColor="gray.200" my={16} w="100%" />
-
             {posts
               .slice(0)
               .reverse()
               .map((post) => (
                 <>
+                  <Text color="gray.400">Blog {post.id.toString()}</Text>
                   <Heading
+                    key={post.id.toString()}
                     letterSpacing="tight"
                     mt={2}
                     as="h2"
@@ -166,17 +149,12 @@ export default function Index({ posts }) {
                   >
                     <Link href={`/${post.slug}`}>{post.title}</Link>
                   </Heading>
-                  <Text color="gray.700" mt={4}>
+                  <Text key={`${post.id}`} color="gray.700" mt={4}>
                     {post.short_content} &nbsp;
-                    <Text color="gray.400">{post.published_on}</Text>
+                    <Text color="gray.400">
+                      {post.published_on.toLocaleString()}
+                    </Text>
                   </Text>
-                  <AspectRatioBox mt={2} w="100%" ratio={5 / 2}>
-                    <Box
-                      as="img"
-                      src={`${process.env.API_URL}/${process.env.ASSETS_FOLDER}/${post.image}${process.env.IMAGE_SETTINGS}`}
-                      allowFullScreen
-                    />
-                  </AspectRatioBox>
                   <Divider borderColor="gray.200" my={16} w="100%" />
                 </>
               ))}
@@ -220,7 +198,7 @@ export default function Index({ posts }) {
 }
 
 export async function getServerSideProps() {
-  const directus = new Directus(process.env.API_URL);
+  const directus = new Directus(process.env.NEXT_PUBLIC_API_URL);
   const posts = await directus.items('posts').readMany();
 
   return {
