@@ -6,7 +6,6 @@ import React, { useEffect } from 'react';
 import SEO from '../next-seo.config';
 import theme from '../styles/theme';
 
-
 const GlobalStyle = ({ children }) => (
   <>
     <CSSReset />
@@ -17,25 +16,29 @@ const GlobalStyle = ({ children }) => (
           color: #fefefe;
         }
 
-          html {
+        html {
           min-width: 360px;
           scroll-behavior: smooth;
         }
 
         body::-webkit-scrollbar {
-        width: 1em;
-      }
-      a{
-        cursor: url("custom.gif"), url("custom.cur"), default;
-      }
+          width: 1em;
+        }
+        a {
+          cursor: url('custom.gif'), url('custom.cur'), default;
+        }
         body::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        background: linear-gradient(rgba(10,245,244,1) 0%, rgba(9,219,31,1) 50%, rgba(247,243,34,1) 100%);
-      }
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          background: linear-gradient(
+            rgba(10, 245, 244, 1) 0%,
+            rgba(9, 219, 31, 1) 50%,
+            rgba(247, 243, 34, 1) 100%
+          );
+        }
 
         body::-webkit-scrollbar-thumb {
-        background-color: #e8e8e8;
-      }
+          background-color: #e8e8e8;
+        }
 
         #__next {
           display: flex;
@@ -66,7 +69,7 @@ const App = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle>
-      <Head>
+        <Head>
           <meta content="IE=edge" httpEquiv="X-UA-Compatible" />
           <meta content="width=device-width, initial-scale=1" name="viewport" />
           <meta content="#da532c" name="theme-color" />

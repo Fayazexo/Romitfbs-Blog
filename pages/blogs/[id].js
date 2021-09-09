@@ -10,12 +10,11 @@ import {
   Stack,
   Text
 } from '@chakra-ui/core';
-import { Directus } from '@directus/sdk';
 import React from 'react';
 import Container from '../../components/Container';
 import Subscribe from '../../components/Subscribe';
 
-export default function Index({ posts }) {
+export default function Post({ post }) {
   return (
     <Box as="main">
       <Flex justifyContent="center" flexDirection="column" bg="#FBFBFB">
@@ -42,22 +41,25 @@ export default function Index({ posts }) {
                 size="2xl"
                 fontWeight="bold"
               >
-                The Blog Corner
-                <Box>
-                  by{' '}
-                  <Box display="inline" backgroundColor="#0af5f4">
-                    Romitfbs
-                  </Box>
-                </Box>
+                {post.title}
               </Heading>
-              <Text color="gray.700" mb={4} fontSize="lg">
-                I write about Business, Marketing and Finance.
-                <br /> I also love writing about Fitness and Lifestyle. <br />{' '}
-                Follow me on this epic journey.
+              <AspectRatioBox mt={8} w="100%" ratio={16 / 9}>
+                <Link href={`/blogs/${post.id}`}>
+                  <Box
+                    as="img"
+                    _hover={{ cursor: 'pointer' }}
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_ASSETS_FOLDER}/${post.image}/${process.env.NEXT_PUBLIC_IMAGE_SETTINGS}`}
+                  />
+                </Link>
+              </AspectRatioBox>
+              <Text mt={8} color="gray.400">
+                {post.published_on}
               </Text>
+              <Divider borderColor="gray.200" my={16} w="100%" />
+
               <Button
                 as="a"
-                href="/"
+                href="/blogs"
                 fontWeight="bold"
                 h="2.5rem"
                 mr={1}
@@ -89,36 +91,22 @@ export default function Index({ posts }) {
             alignItems="flex-start"
             maxWidth="600px"
           >
-            {posts
-              .slice(0)
-              .reverse()
-              .map((post) => (
-                <section key={post.id}>
-                  <Heading
-                    letterSpacing="tight"
-                    mt={2}
-                    as="h2"
-                    size="lg"
-                    fontWeight="bold"
-                  >
-                    <Link href={`blogs/${post.id}`}>{post.title}</Link>
-                  </Heading>
-                  <Text key={`${post.id}`} color="gray.700" mt={4}>
-                    {post.preview_content} &nbsp;
-                    <Text color="gray.400">{post.published_on}</Text>
-                  </Text>
-                  <AspectRatioBox mt={8} w="100%" ratio={16 / 9}>
-                    <Link href={`/blogs/${post.id}`}>
-                      <Box
-                        as="img"
-                        _hover={{ cursor: 'pointer' }}
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_ASSETS_FOLDER}/${post.image}/${process.env.NEXT_PUBLIC_IMAGE_SETTINGS}`}
-                      />
-                    </Link>
-                  </AspectRatioBox>
-                  <Divider borderColor="gray.200" my={16} w="100%" />
-                </section>
-              ))}
+            <section>
+              <Heading
+                letterSpacing="tight"
+                mt={2}
+                as="h2"
+                size="lg"
+                fontWeight="bold"
+              >
+                <Text>{post.title}</Text>
+              </Heading>
+              <Text color="gray.700" mt={4}>
+                {post.content} &nbsp;
+                <Text color="gray.400">{post.published_on}</Text>
+              </Text>
+              <Divider borderColor="gray.200" my={16} w="100%" />
+            </section>
 
             <Subscribe />
             <Flex align="center">
@@ -158,13 +146,15 @@ export default function Index({ posts }) {
   );
 }
 
-export async function getServerSideProps() {
-  const directus = new Directus(process.env.NEXT_PUBLIC_API_URL);
-  const posts = await directus.items('posts').readMany();
-
+export async function getServerSideProps(ctx) {
+  const { id } = ctx.query;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/items/posts/${id}`
+  );
+  const post = await res.json();
   return {
     props: {
-      posts: posts.data
+      post: post.data
     }
   };
 }
